@@ -42,48 +42,54 @@ async def download_single(name, extension):
 
 async def download_multiple(title_list, database=False, mail=False):
     existing_titles = find_books()
+    extension = ''
     for title in title_list:
-        if title not in existing_titles:
-            q = title
-            result = await lg.search(query=q, filters={'extension': extension_azw3})
-            download_location = []
-            path = Path('Downloads/' + q)
-            if len(result.keys()) > 0:
-                print('awz3')
-            else:
-                result = await lg.search(query=q, filters={'extension': extension_azw})
+        try:
+            if title not in existing_titles:
+                q = title
+                result = await lg.search(query=q, filters={'extension': extension_azw3})
+                extension = extension_azw3
+                download_location = []
+                path = Path('Downloads/' + q)
                 if len(result.keys()) > 0:
-                    print('azw')
+                    continue
                 else:
-                    result = await lg.search(query=q, filters={'extension': extension_mobi})
+                    result = await lg.search(query=q, filters={'extension': extension_azw})
                     if len(result.keys()) > 0:
-                        print('mobi')
+                        extension = extension_azw
                     else:
-                        result = await lg.search(query=q, filters={'extension': extension_epub})
+                        result = await lg.search(query=q, filters={'extension': extension_mobi})
                         if len(result.keys()) > 0:
-                            print('epub')
+                            extension = extension_mobi
                         else:
-                            result = await lg.search(query=q, filters={'extension': extension_pdf})
-                            print('pdf')
+                            result = await lg.search(query=q, filters={'extension': extension_epub})
+                            if len(result.keys()) > 0:
+                                extension = extension_epub
+                            else:
+                                result = await lg.search(query=q, filters={'extension': extension_pdf})
+                                extension = extension_pdf
 
-            if len(result.keys()) > 0:
-                item = result[list(result)[0]]
-                file_path = await lg.download(item['mirrors']['main'],
-                                              dest_folder=path,
-                                              progress=progress,
-                                              progress_args=[
-                                                  item['title']
-                                              ])
-                download_location.append(file_path)
-                print("Downloaded book")
-                if database:
-                    insert_data(item)
-                if mail:
-                    notify(title, title, file_path)
+                if len(result.keys()) > 0:
+                    item = result[list(result)[0]]
+                    file_path = await lg.download(item['mirrors']['main'],
+                                                  dest_folder=path,
+                                                  progress=progress,
+                                                  progress_args=[
+                                                      item['title']
+                                                  ])
+                    download_location.append(file_path)
+                    print("Downloaded book: "+ title + "in format: " + extension)
+                    if database:
+                        insert_data(item)
+                    if mail:
+                        notify(title, title, file_path)
 
-            else:
-                if database:
-                    insert_missing_data(title)
+                else:
+                    if database:
+                        insert_missing_data(title)
+        except:
+            print('Error for: '+ title)
+
 
 
 async def progress(current, total, title):
