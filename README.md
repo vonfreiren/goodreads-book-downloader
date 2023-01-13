@@ -14,7 +14,7 @@ The format of the downloaded books is prioritized and can be modified:
 - pdf
 
 
-##Optional features
+## Optional features
 
 ### Storage and Tacking
 
