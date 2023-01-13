@@ -13,6 +13,7 @@ The format of the downloaded books is prioritized and can be modified:
 - epub
 - pdf
 
+
 ## Optional features
 
 ### Storage and Tacking
