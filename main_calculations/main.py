@@ -1,4 +1,5 @@
 import asyncio
+import traceback
 from datetime import datetime
 from pathlib import Path
 
@@ -41,7 +42,10 @@ async def download_single(name, extension):
 
 
 async def download_multiple(title_list, database=False, mail=False):
-    existing_titles = find_books()
+    if database:
+        existing_titles = find_books()
+    else:
+        existing_titles = []
     extension = ''
     for title in title_list:
         try:
@@ -88,6 +92,7 @@ async def download_multiple(title_list, database=False, mail=False):
                     if database:
                         insert_missing_data(title)
         except:
+            traceback.print_exc()
             print('Error for: '+ title)
 
 

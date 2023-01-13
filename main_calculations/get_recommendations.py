@@ -12,7 +12,7 @@ from selenium import webdriver
 from auxiliar import other_information
 from database import database_information
 from database.database import is_book_already_in_db
-from main import retrieve_ids, retrieve_authors, retrieve_titles
+from main_calculations.main import retrieve_ids, retrieve_authors, retrieve_titles
 
 my_client = MongoClient(database_information.mongo_address)
 db = my_client["Library"]
