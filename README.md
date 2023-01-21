@@ -13,6 +13,13 @@ The format of the downloaded books is prioritized and can be modified:
 - epub
 - pdf
 
+## Instructions
+
+You will need to have a config.yaml file in the same directory as the script that contains the path where you want to save the files, and the URL of the Goodreads profile with books read. The options are in the config.yaml file
+
+- path: '/Users/javier/PycharmProjects/books-goodreads/downloads'
+- url_goodreads: 'https://www.goodreads.com/review/list/13344444-xxxx-bbbbb-cccccc'
+
 
 ## Optional features
 
