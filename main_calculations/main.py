@@ -52,11 +52,10 @@ async def download_multiple(title_list, database=False, mail=False):
             if title not in existing_titles:
                 q = title
                 result = await lg.search(query=q, filters={'extension': extension_azw3})
-                extension = extension_azw3
                 download_location = []
                 path = Path('Downloads/' + q)
                 if len(result.keys()) > 0:
-                    continue
+                    extension = extension_azw3
                 else:
                     result = await lg.search(query=q, filters={'extension': extension_azw})
                     if len(result.keys()) > 0:
